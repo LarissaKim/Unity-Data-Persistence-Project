@@ -66,7 +66,7 @@ public class MainManager : MonoBehaviour
 
     public void DisplayBestScore()
     {
-        BestScoreText.text = $"Best Score - {PlayerManager.Instance.PlayerName}: 0";
+        BestScoreText.text = $"Best Score - {PlayerManager.Instance.PlayerName}: {PlayerManager.Instance.BestScore}";
     }
 
     void AddPoint(int point)
@@ -77,7 +77,15 @@ public class MainManager : MonoBehaviour
 
     public void GameOver()
     {
+        if (PlayerManager.Instance.BestScore < m_Points)
+        {
+            PlayerManager.Instance.SaveBestScore(m_Points);
+        }
+
         m_GameOver = true;
         GameOverText.SetActive(true);
+
+        // Immediately update UI
+        DisplayBestScore();
     }
 }

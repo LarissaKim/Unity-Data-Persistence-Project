@@ -8,19 +8,23 @@ public class MenuUIHandler : MonoBehaviour
 {
     [SerializeField] TMP_InputField PlayerNameInput;
 
-    public void StartNew()
+    // Pre-fill input field with name from save file
+    void Start()
     {
-        Debug.Log("Setting player name");
-        SavePlayerNameInput();
-
-        Debug.Log("Loading scene");
-        SceneManager.LoadScene(1);
+        if (PlayerManager.Instance.PlayerName != null)
+        {
+            PlayerNameInput.text = PlayerManager.Instance.PlayerName;
+        }
     }
 
-    public void SavePlayerNameInput()
+    public void StartNew()
     {
-        PlayerManager.Instance.SavePlayerName(PlayerNameInput.text);
+        // Allows multiple players on same computer (but overwrites existing save file)
+        if (PlayerNameInput.text != PlayerManager.Instance.PlayerName)
+        {
+            PlayerManager.Instance.SaveNewPlayer(PlayerNameInput.text);
+        }
 
-        Debug.Log(PlayerManager.Instance.PlayerName);
+        SceneManager.LoadScene(1);
     }
 }
